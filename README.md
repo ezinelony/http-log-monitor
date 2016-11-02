@@ -13,7 +13,8 @@ Consume an actively written-to w3c-formatted HTTP access log (https://en.wikiped
 
 
  ## Design Approach
-    The application utilizes Reactive Design
+    The application utilizes Reactive Design 
+    
         There are about 4 major components which are actors that communicate via messages
         
         1. The Monitor: monitors the log file changes
