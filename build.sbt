@@ -35,6 +35,12 @@ lazy val versions = new {
   }
 }
 
+lazy val util = project.
+  in(file("util"))
+  .settings(commonSettings: _*)
+  .settings(assemblySettings: _*)
+  .settings( name := "http-log-monitor-util")
+
 lazy val core = project.
   in(file("core"))
   .settings(commonSettings: _*)
@@ -72,4 +78,4 @@ lazy val monitor = project.
       "com.github.pathikrit" %% "better-files" % versions.betterFiles,
       "com.github.pathikrit"  %% "better-files-akka"  % versions.akkaBetterFiles
     )
-  ).dependsOn(core)
+  ).dependsOn(core, util)

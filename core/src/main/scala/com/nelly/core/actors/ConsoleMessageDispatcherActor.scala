@@ -20,6 +20,7 @@ class ConsoleMessageDispatcherActor(screenSize: Int = 25)(implicit system: Actor
    override def receive: Receive =  {
      case (message: AlertMessage) => Future {
        println(s"\u001B[31m${message.message}")
+       println()
        maxScreenMessages.filter( a => a != null).reverse.foreach( b => {
          if(b.isInstanceOf[AlertMessage]) println(s"\u001B[31m${b.message}") else  println(b.message)
        })

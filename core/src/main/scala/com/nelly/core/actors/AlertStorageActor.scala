@@ -25,14 +25,15 @@ class AlertStorageActor(store: LastXTimeStore, alertThreshold: Int, alertDelayIn
     override def tick(): Unit = {
       store.secondsTick()
       val totalCount = store.secondsTotal()
-    
-      (totalCount.toDouble*60/store.storeDurationInSeconds > alertThreshold) match {
+      val thresholdIsCrossed = totalCount.toDouble*60/store.storeDurationInSeconds > alertThreshold
+
+      thresholdIsCrossed match {
         case true if !alertIsOn => { 
           alertIsOn = true 
           highTrafficBeginning = DateTime.now()
           lastAlertUpdate = DateTime.now()
           messageDispatcherActor() !  AlertMessage(
-            s"High traffic generated an alert - hits = ${totalCount}, triggered at ${highTrafficBeginning}"
+            s"High traffic generated an alert - hits = ${totalCount}, triggered at ${Formatter.dateTime(highTrafficBeginning)}"
           )
         }
         case true if alertIsOn => {
@@ -47,7 +48,7 @@ class AlertStorageActor(store: LastXTimeStore, alertThreshold: Int, alertDelayIn
           alertIsOn = false
           lastAlertUpdate = DateTime.now()
           messageDispatcherActor() !  AlertMessage(
-            s"High Traffic that started at ${highTrafficBeginning} has returned to normal at ${DateTime.now()}  hits = ${totalCount}")
+            s"High traffic that started at ${Formatter.dateTime(highTrafficBeginning)} has returned to normal at ${Formatter.dateTime(DateTime.now())}  hits = ${totalCount}")
         }
 
         case _ =>
