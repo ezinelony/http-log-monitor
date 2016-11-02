@@ -4,8 +4,9 @@ import scala.util.Try
 
 
 object EnvironmentalConfig extends Config {
-  
-  val logPath = getStringOrElse("ENV_ACCESS_LOG", "/Users/nelly/Documents/Workspaces/challenges/access_log")
+
+  val logPath = sys.env.get("ENV_ACCESS_LOG_PATH")
+
   val alertThreshold =  getIntOrElse("ENV_ALERT_THRESHOLD", 10)
   val alertDelayInSeconds = getIntOrElse("ENV_ALERT_DELAY_IN_SECONDS", 60)
   val sectionTickDurationInSeconds = getIntOrElse("ENV_SECTION_TICK_DURATION_IN_SECONDS", 10)

@@ -46,3 +46,26 @@ Consume an actively written-to w3c-formatted HTTP access log (https://en.wikiped
         These could useful in determining abnormal requests
     For the moment, this program only works on Linux. It could be good to propose a Windows version.
    
+   ## ENV Variables
+   
+     `ENV_ACCESS_LOG_PATH` : path to the access log (Without this the application will exit)
+     `ENV_ALERT_DELAY_IN_SECONDS` : [Default is 60 seconds] Delay to observe between persistent high frequency alerts
+     `ENV_SECTION_TICK_DURATION_IN_SECONDS` : [Default is 10 seconds] Section with most hits interval
+     `ENV_ALERT_WINDOW_IN_MINUTES`: [Default is 2 minutes] How far back should alert calculate
+     `ENV_SCREEN_WINDOW`: [Default is 25] The number of past messages that gets replayed immediately following an alert
+     
+   ## Testing/Running Requires sbt
+     
+     sbt test
+     "sbt" "project monitor" "run"
+     
+   ## Building/Running via java -jar Requires sbt
+   
+      build : `sbt assembly` 
+      run (you can pass in your ENV too): java -jar {appRoot}/core/target/scala-2.11/http-log-monitor-core-assembly-1.0.jar 
+      
+     
+     
+     
+     
+    

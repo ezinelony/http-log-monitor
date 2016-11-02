@@ -13,7 +13,7 @@ class LogMonitor(logFile: File, changeObserversRootPath: String)(
   )
   extends FileWatcher(logFile, false) with ActorLogging {
 
-  var logPointer = 0
+  private var logPointer = 0
   
   this.log.info(s"... logfile ${logFile} Monitoring begins...")
   sendNotifications(logFile) //On start up, read whatever is in the log file and send out notifications

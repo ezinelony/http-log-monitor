@@ -76,6 +76,10 @@ lazy val monitor = project.
     ),
     libraryDependencies ++= Seq(
       "com.github.pathikrit" %% "better-files" % versions.betterFiles,
-      "com.github.pathikrit"  %% "better-files-akka"  % versions.akkaBetterFiles
+      "com.github.pathikrit"  %% "better-files-akka"  % versions.akkaBetterFiles,
+      "org.mockito" % "mockito-core" % versions.tests.mockito % "test",
+      "org.scalatest" %% "scalatest" % versions.tests.scalaTest % "test",
+      "org.scalamock" %% "scalamock-scalatest-support" % versions.tests.scalaMock % "test",
+      "org.specs2" %% "specs2" % versions.tests.specs2 % "test"
     )
   ).dependsOn(core, util)

@@ -13,9 +13,13 @@ object LogMonitorApplication extends App {
   implicit val system = ActorSystem("log-monitor-system")
   implicit val logEntryParser = new CommonLogFormatRegexParser
 
+  
   val shortTermStorage = new ShortTermTimeStore(EnvironmentalConfig.lastAlertCalculationDurationInSeconds)
   val maxSectionHitsStore = new HashMapPriorityQueue()(SectionOrdering.hitsOrdering) //store for sections with the most hits
-  val logFile = new File(EnvironmentalConfig.logPath)
+  val logFile = new File(EnvironmentalConfig.logPath match {
+      case Some(string) => string
+      case None => println(s"\u001B[31mNo ENV_ACCESS_LOG_PATH set (please set the location of the access log), exiting ..."); println(s" ...Bye"); sys.exit(0)
+    })
 
   logFile.exists() && !logFile.isDirectory match {
     case true => {
@@ -23,6 +27,9 @@ object LogMonitorApplication extends App {
         new ConsoleMessageDispatcherActor(screenSize = EnvironmentalConfig.screenSize)), "message-dispatcher-actor"
       )
 
+      /*
+          Listener to log entry messages
+       */
       system.actorOf( Props(new Actor() {
         context.actorOf( Props(new UrlSectionActor(
           Seq(maxSectionHitsStore
