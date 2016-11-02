@@ -15,7 +15,7 @@ import org.specs2.mock.Mockito
 
 import scala.concurrent.duration.Duration
 
-class AlertStorageActorTest extends TestKit(ActorSystem("MySpec")) with ImplicitSender with WordSpecLike with Mockito
+class AlertStorageActorTest extends TestKit(ActorSystem("AlertStorageActorTestSpec")) with ImplicitSender with WordSpecLike with Mockito
 with BeforeAndAfterAll
 {
 
