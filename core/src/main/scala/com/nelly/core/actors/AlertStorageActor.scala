@@ -16,10 +16,12 @@ class AlertStorageActor(store: LastXTimeStore,
                         tickInterval: TickInterval = TickInterval(1, "seconds")
                          ) extends TickActor(tickInterval) {
  
-    var highTrafficBeginning : DateTime = _
-    var alertIsOn = false
-    var lastAlertUpdate : DateTime = _
+    private var highTrafficBeginning : DateTime = _
+    private var alertIsOn = false
+    private var lastAlertUpdate : DateTime = _
 
+    def isAlertOn() : Boolean = alertIsOn
+  
     protected def messageDispatcherActor()  : ActorSelection = {
       context.actorSelection(s"/user/${messageDispatcherActorName}")
     }
@@ -29,7 +31,7 @@ class AlertStorageActor(store: LastXTimeStore,
     override def tick(): Unit = {
       store.secondsTick()
       val totalCount = store.secondsTotal()
-      val thresholdIsCrossed = totalCount.toDouble*60/store.storeDurationInSeconds > alertThreshold
+      val thresholdIsCrossed = totalCount.toDouble*60/Math.max(1, store.storeDurationInSeconds) > alertThreshold
 
       thresholdIsCrossed match {
         case true if !alertIsOn => { 
