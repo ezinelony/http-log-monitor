@@ -22,7 +22,7 @@ Consume an actively written-to w3c-formatted HTTP access log (https://en.wikiped
             An actor become a listener by becoming a child of a listener node which is detached from the monitor
         
         2. The Section Actor: Receives a message about log entry changes
-           In order to efficiently get sections with the most hits, it utilizes a MaxHeap like datastructure called `HashMapPriorityQueue` (HashMap+PriorityQueue with update capability)
+           In order to efficiently get sections with the most hits, it utilizes a MaxHeap like datastructure called HashMapPriorityQueue (HashMap+PriorityQueue with update capability)
            It also sends out stats messages to Message Dispatcher actor; responsible for dispatching this message (In this case, printing it to the console)
         
         3. Message Dispatcher Actor: prints out messages to the console and manages how many messages a client sees again when an alert is sent
