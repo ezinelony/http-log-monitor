@@ -37,18 +37,14 @@ class AlertStorageActor(store: LastXTimeStore,
           highTrafficBeginning = DateTime.now()
           lastAlertUpdate = DateTime.now()
           messageDispatcherActor() !  AlertMessage(
-            s"""High traffic generated an alert - hits = ${totalCount},
-               |triggered at ${Formatter.dateTime(highTrafficBeginning)}
-               |""".stripMargin
+            s"High traffic generated an alert - hits = ${totalCount}, triggered at ${Formatter.dateTime(highTrafficBeginning)}"
           )
         }
         case true if alertIsOn => {
           if(( DateTime.now().getMillis - lastAlertUpdate.getMillis) >= alertDelayInSeconds*1000  ){
             lastAlertUpdate = DateTime.now()
             messageDispatcherActor()  !  AlertMessage(
-              s"""High traffic has been going on for 
-                 |${Formatter.timeDiff(highTrafficBeginning, DateTime.now())} - hits = ${totalCount}
-                 |""".stripMargin
+              s"High traffic has been going on for  ${Formatter.timeDiff(highTrafficBeginning, DateTime.now())} - hits = ${totalCount}  "
             )
           }
       
@@ -57,9 +53,7 @@ class AlertStorageActor(store: LastXTimeStore,
           alertIsOn = false
           lastAlertUpdate = DateTime.now()
           messageDispatcherActor() !  AlertMessage(
-            s"""High traffic that started at ${Formatter.dateTime(highTrafficBeginning)}
-               |has returned to normal at ${Formatter.dateTime(DateTime.now())}  hits = ${totalCount}
-               |""".stripMargin)
+            s"High traffic that started at ${Formatter.dateTime(highTrafficBeginning)} has returned to normal at ${Formatter.dateTime(DateTime.now())}  hits = ${totalCount} ")
         }
 
         case _ =>

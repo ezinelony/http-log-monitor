@@ -28,7 +28,7 @@ class ConsoleMessageDispatcherActor(screenSize: Int = 25)(implicit system: Actor
        println()
        maxScreenMessageList.reverse.foreach( b => {
          if(b.isInstanceOf[AlertMessage]) 
-           println(s"\u001B[31m${b.message} \033[1;30m --history") 
+           println(s"\u001B[31m${b.message} \033[1;30m --history")
          else  println(b.message)
        })
        addMessage(message)
