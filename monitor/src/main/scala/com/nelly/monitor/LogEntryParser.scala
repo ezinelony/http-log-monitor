@@ -29,10 +29,10 @@ class CommonLogFormatRegexParser extends LogEntryParser[LogEntry] {
         )
       ) match {
         case Success(logEntry) => Option(logEntry)
-        case Failure(e) => { println(s"Failed to parse:: $e"); None }
+        case Failure(e) => { println(s"Failed to parse:: `$e`"); None }
       }
     }
-    case _ => { println(s"Failed to parse"); None }
+    case _ => { println(s"Failed to parse `$entry`"); None }
   }
 }
 

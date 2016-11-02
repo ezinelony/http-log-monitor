@@ -3,14 +3,18 @@ package com.nelly.core.actors
 
 import akka.actor.ActorSelection
 import com.nelly.core.Formatter
-import com.nelly.core.domain.{AlertMessage, LastXTimeStore, LogEntry}
+import com.nelly.core.domain.{TickInterval, AlertMessage, LastXTimeStore, LogEntry}
 import org.joda.time.DateTime
 
 import scala.language.implicitConversions
 
 
-class AlertStorageActor(store: LastXTimeStore, alertThreshold: Int, alertDelayInSeconds: Int,  messageDispatcherActorName : String)
-                      extends TickActor(1, "seconds") {
+class AlertStorageActor(store: LastXTimeStore, 
+                        alertThreshold: Int,
+                        alertDelayInSeconds: Int,
+                        messageDispatcherActorName : String,
+                        tickInterval: TickInterval = TickInterval(1, "seconds")
+                         ) extends TickActor(tickInterval) {
  
     var highTrafficBeginning : DateTime = _
     var alertIsOn = false
@@ -33,14 +37,19 @@ class AlertStorageActor(store: LastXTimeStore, alertThreshold: Int, alertDelayIn
           highTrafficBeginning = DateTime.now()
           lastAlertUpdate = DateTime.now()
           messageDispatcherActor() !  AlertMessage(
-            s"High traffic generated an alert - hits = ${totalCount}, triggered at ${Formatter.dateTime(highTrafficBeginning)}"
+            s"""High traffic generated an alert - hits = ${totalCount},
+               |triggered at ${Formatter.dateTime(highTrafficBeginning)}
+               |""".stripMargin
           )
         }
         case true if alertIsOn => {
           if(( DateTime.now().getMillis - lastAlertUpdate.getMillis) >= alertDelayInSeconds*1000  ){
             lastAlertUpdate = DateTime.now()
             messageDispatcherActor()  !  AlertMessage(
-              s"High traffic has been going on for ${Formatter.timeDiff(highTrafficBeginning, DateTime.now())} - hits = ${totalCount}")
+              s"""High traffic has been going on for 
+                 |${Formatter.timeDiff(highTrafficBeginning, DateTime.now())} - hits = ${totalCount}
+                 |""".stripMargin
+            )
           }
       
         }
@@ -48,7 +57,9 @@ class AlertStorageActor(store: LastXTimeStore, alertThreshold: Int, alertDelayIn
           alertIsOn = false
           lastAlertUpdate = DateTime.now()
           messageDispatcherActor() !  AlertMessage(
-            s"High traffic that started at ${Formatter.dateTime(highTrafficBeginning)} has returned to normal at ${Formatter.dateTime(DateTime.now())}  hits = ${totalCount}")
+            s"""High traffic that started at ${Formatter.dateTime(highTrafficBeginning)}
+               |has returned to normal at ${Formatter.dateTime(DateTime.now())}  hits = ${totalCount}
+               |""".stripMargin)
         }
 
         case _ =>

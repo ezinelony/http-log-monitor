@@ -5,7 +5,7 @@ import java.io.File
 import akka.actor.{Actor, ActorSystem, Props}
 import com.nelly.core.actors.{AlertStorageActor, ConsoleMessageDispatcherActor, UrlSectionActor}
 import com.nelly.core.datastructures.HashMapPriorityQueue
-import com.nelly.core.domain.{SectionOrdering, ShortTermTimeStore}
+import com.nelly.core.domain.{TickInterval, SectionOrdering, ShortTermTimeStore}
 import com.nelly.util.EnvironmentalConfig
 
 
@@ -26,7 +26,7 @@ object LogMonitorApplication extends App {
       system.actorOf( Props(new Actor() {
         context.actorOf( Props(new UrlSectionActor(
           Seq(maxSectionHitsStore
-          ),EnvironmentalConfig.sectionTickDurationInSeconds, "message-dispatcher-actor"
+          ), "message-dispatcher-actor", TickInterval(EnvironmentalConfig.sectionTickDurationInSeconds, "seconds")
         )), "section-actor")
 
         context.actorOf(Props(new AlertStorageActor(

@@ -32,25 +32,4 @@ object SectionOrdering {
     def compare(a: UrlSection, b: UrlSection) = a.hits compare b.hits
     override def toString() : String  = "hits"
   }
-
-  def notFoundOrdering: Ordering[UrlSection] = new Ordering[UrlSection] {
-    def compare(a:UrlSection, b:UrlSection) = a.statuses.getOrElse(404, 0) compare b.statuses.getOrElse(404, 0)
-    override def toString() : String  = "404s"
-  }
-
-  def internalServerOrdering: Ordering[UrlSection] = new Ordering[UrlSection] {
-    def compare(a:UrlSection, b:UrlSection) = {
-
-      (a.statuses.groupBy((k) => k._1.toInt > 499).get(true) match {
-        case Some(e) => e.values.reduce(_ + _);
-        case None => 0
-      }) compare ( b.statuses.groupBy((k) => k._1.toInt > 499).get(true) match {
-        case Some(e) => e.values.reduce(_ + _);
-        case None => 0
-      })
-    }
-
-    override def toString() : String  = "inter server error"
-    
-  }
 }

@@ -2,12 +2,13 @@ package com.nelly.core.actors
 
 
 import akka.actor.{ActorLogging, Actor}
-import com.nelly.core.domain.LogEntry
+import com.nelly.core.domain.{TickInterval, LogEntry}
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 import scala.language.implicitConversions
 
-abstract class TickActor(duration: Int, durationUnit: String) extends Actor with ActorLogging {
+
+abstract class TickActor(tickInterval: TickInterval) extends Actor with ActorLogging {
    import context._
 
    val tickMessage: String = "tick"
@@ -27,7 +28,7 @@ abstract class TickActor(duration: Int, durationUnit: String) extends Actor with
    }
 
    private[this] def scheduleTick() : Unit = system.scheduler.scheduleOnce(
-     Duration(duration, durationUnit), self, tickMessage
+     Duration(tickInterval.interval, tickInterval.unit), self, tickMessage
    )
    
  }
