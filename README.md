@@ -13,7 +13,7 @@ Consume an actively written-to w3c-formatted HTTP access log (https://en.wikiped
 
 
  ## Design Approach
-    The application utilizes Reactive Design [http://www.reactivemanifesto.org/, https://www.lightbend.com/blog/architect-reactive-design-patterns]
+    The application utilizes Reactive Design Ideas [http://www.reactivemanifesto.org/, https://www.lightbend.com/blog/architect-reactive-design-patterns]
     
         There are about 4 major components which are actors that communicate via messages
         
