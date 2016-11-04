@@ -27,7 +27,7 @@ Consume an actively written-to w3c-formatted HTTP access log (https://en.wikiped
         
         3. Message Dispatcher Actor: prints out messages to the console and manages how many messages a client sees again when an alert is sent
         
-        4. The Section Actor: Is also a listener to log entry changes
+        4. The Alert Actor: Is also a listener to log entry changes
            It utilizes a data structure that enables it to only store the necessary hits to be able to calculate last 2 hours/minutes/seconds 
            It also send out alert message to the Message Dispatcher Actor
            
