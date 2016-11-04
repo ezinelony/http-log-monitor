@@ -44,7 +44,7 @@ Consume an actively written-to w3c-formatted HTTP access log (https://en.wikiped
    
     We could use the log entry gather information about requests transitions i.e, does requestA always follow requestB? or this is the first time requestC is coming immediately after requestD
         These could useful in determining abnormal requests
-    For the moment, this program only works on Linux. It could be good to propose a Windows version.
+    For the moment, this program potentially only works on Linux/mac OSX. A windows version will be good
    
    ## ENV Variables
    
